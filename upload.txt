@@ -1,0 +1,25 @@
+
+
+AT+RST //重置WIFI模块
+AT+CWMODE=3 //设置WIFI应用模式
+AT+CWJAP="WIFI","1234567890" //连接无线路由器
+AT+CIFSR//查询本地IP
+
+
+
+
+
+AT+CIPSTART="TCP","183.230.40.33",80 //和服务器建立TCP连接
+
+AT+CIPMODE=1 //进入透明传输模式
+
+AT+CIPSEND //开始传输
+
+
+
+POST /devices/29982897/datapoints?type=3 HTTP/1.1
+api-key:Aj9NRt=pYZlyZub4M=uLgsJctdI=
+Host:api.heclouds.com
+Content-Length:20
+
+{"temperature":100}
