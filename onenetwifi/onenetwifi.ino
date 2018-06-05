@@ -25,7 +25,7 @@ void setup() {
   while(Serial.available() > 0)
      Serial.read();  
   delay(1000);
-  sendcmd("AT+CIPSTART=\"TCP\",\"183.230.40.33\",80\r\n");
+  sendcmd("AT+CIPSTART=\"TCP\",\"183.230.40.33\",80,6000\r\n");
   sendcmd("AT+CIPMODE=1\r\n");
   
    randomSeed(analogRead(A0));
@@ -52,6 +52,9 @@ void sendcmd(char *cmd)
 void uploaddata(char * dsid,char * data)//dsid为数据流id（名称），data为要上传的数据串
 {
  char jsonstring[100];
+ char end_c[2];
+  end_c[0]=0x1a;
+  end_c[1]='\0';
  sprintf(jsonstring,"{\"datastreams\":[{\"id\":\"%s\",\"datapoints\":[{\"value\":%s}]}]}",dsid,data);
  sendcmd("AT+CIPSEND\r\n");
  sendcmd("POST /devices/");
@@ -65,5 +68,6 @@ void uploaddata(char * dsid,char * data)//dsid为数据流id（名称），data�
  mySerial.print(strlen(jsonstring));
  sendcmd("\r\n\r\n");
  sendcmd(jsonstring); 
+ mySerial.write(end_c);
 }
 
